@@ -15,18 +15,18 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CameraModel.h">
+    <ClInclude Include="..\common\CameraModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rotation.h">
+    <ClInclude Include="..\common\ModelDataProducer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ModelData.h">
+    <ClInclude Include="..\common\Rotation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ModelDatas.cpp">
+    <ClCompile Include="CameraDataFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

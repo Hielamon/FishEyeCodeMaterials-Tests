@@ -1,9 +1,8 @@
 #include <iostream>
-#include "Rotation.h"
-#include "CameraModel.h"
-#include "ModelData.h"
+#include "../common/Rotation.h"
+#include "../common/CameraModel.h"
+#include "../common/ModelDataProducer.h"
 
-using namespace FishEye;
 
 int pairNum = 300, trialNum = 500;
 double sigma = 0.0, translateLen = 0.0;
@@ -46,13 +45,13 @@ int main(int argc, char *argv[])
 	std::cout << "trialNum : " << trialNum << std::endl;
 	std::cout << "sigma : " << sigma << std::endl;
 	std::cout << "translateLen : " << translateLen << std::endl;
-	
+
 	std::string classicModelName[3] = { "Equidistant", "Equisolid", "Stereographic" };
 	double minFocal = 400, maxFocal = 600;
 	double minFov = CV_PI * (160 / 180.0), maxFov = CV_PI * (200 / 180.0);
 	double minAngle = CV_PI * (70 / 180.0), maxAngle = CV_PI * (110 / 180.0);
-	
-	std::ofstream fs("D:/Academic-Research/My Papers/FishEyeCodeMaterials/TestCodes/LensModel/SyntheticData.txt", std::ios::out);
+
+	std::ofstream fs("SyntheticData.txt", std::ios::out);
 	fs << trialNum << std::endl;
 	ModelDataProducer producer;
 	srand(time(NULL));
@@ -62,7 +61,7 @@ int main(int argc, char *argv[])
 		double fov = RandomInRange(minFov, maxFov);
 		double f = RandomInRange(minFocal, maxFocal);
 		int typeIdx = RandomInRange(0, 3);
-		
+
 		std::shared_ptr<CameraModel> pModel = createCameraModel(classicModelName[typeIdx], 0, 0, f, fov, 0);/*std::make_shared<Stereographic>(0, 0, f, fov)*/;
 		std::shared_ptr<Rotation> pRotation = std::make_shared<Rotation>(minAngle, maxAngle);
 		producer.produce(pModel, pRotation, pairNum, sigma, translateLen);

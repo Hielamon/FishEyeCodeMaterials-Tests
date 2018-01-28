@@ -19,9 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{839616BA-208F-4A2E-B100-FC1D70EB30D2}</ProjectGuid>
+    <ProjectGuid>{BF5EF0DD-FCE3-4334-A736-21F5659E6CA4}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>LensModel</RootNamespace>
+    <RootNamespace>CameraDataFactory</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -148,12 +148,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="CameraModel.h" />
-    <ClInclude Include="ModelData.h" />
-    <ClInclude Include="Rotation.h" />
+    <ClInclude Include="..\common\CameraModel.h" />
+    <ClInclude Include="..\common\ModelDataProducer.h" />
+    <ClInclude Include="..\common\Rotation.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ModelDatas.cpp" />
+    <ClCompile Include="CameraDataFactory.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

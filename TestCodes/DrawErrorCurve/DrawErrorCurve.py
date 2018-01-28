@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator, FuncFormatter
 import numpy as np
 
+import sys, getopt
+
 def scaleFigure(fig, scale):
     originSize = fig.get_size_inches()
     originSize *= scale
@@ -122,16 +124,28 @@ def showErrorWithNum(typeError, type, title):
 
     plt.show()
 
+def parseTest(argv):
+    helpStr = 'DrawErrorCurve.py -i <inputfile> -o <outpoutfile>'
+
+    try:
+        opts, args = getopt.getopt(argv, "hi:o:", ["ifile="])
+    except getopt.GetoptError:
+        print(helpStr)
+        sys.exit(2)
+
+    for opt, arg in opts:
+        if opt == '-h':
+            print(helpStr)
+            sys.exit()
+        elif opt in ("-i", "--ifile"):
+            inputfile = arg
+        elif opt in ("-o", "--ofile"):
+            outputfile = arg
+    return opt, arg
+
 if __name__ == "__main__":
-    #showErrorWithNoise("Noise", "mean", "Mean Pixel Error Curves With Diff Noise Level")
-    #showErrorWithNoise("Noise", "median", "Median Pixel Error Curves With Diff Noise Level")
-    #showErrorWithNoise("NoiseRot", "mean", "Mean Rotation Error Curves With Diff Noise Level")
-    #showErrorWithNoise("NoiseRot", "median", "Median Rotation Error Curves With Diff Noise Level")
-    #showErrorWithNoise("Translate", "mean", "Mean Pixel Error Curves With Diff Translate Level")
-    #showErrorWithNoise("Translate", "median", "Median Pixel Error Curves With Diff Translate Level")
-    #showErrorWithNoise("TranslateRot", "mean", "Mean Rotation Error Curves With Diff Translate Level")
-    #showErrorWithNoise("TranslateRot", "median", "Median Rotation Error Curves With Diff Translate Level")
-    showErrorWithNum("PairsNum", "mean", "Mean Pixel Error Curves With Diff Pairs Number")
-    showErrorWithNum("PairsNum", "median", "Median Pixel Error Curves With Diff Pairs Number")
-    showErrorWithNum("PairsNumRot", "mean", "Mean Rotation Error Curves With Diff Pairs Number")
-    showErrorWithNum("PairsNumRot", "median", "Median Rotation Error Curves With Diff Pairs Number")
+    #showErrorWithNum("PairsNum", "mean", "Mean Pixel Error Curves With Diff Pairs Number")
+    #showErrorWithNum("PairsNum", "median", "Median Pixel Error Curves With Diff Pairs Number")
+    #showErrorWithNum("PairsNumRot", "mean", "Mean Rotation Error Curves With Diff Pairs Number")
+    #showErrorWithNum("PairsNumRot", "median", "Median Rotation Error Curves With Diff Pairs Number")
+    parseTest(sys.argv[1:])

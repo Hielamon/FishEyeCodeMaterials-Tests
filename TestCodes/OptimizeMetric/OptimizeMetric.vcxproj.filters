@@ -18,14 +18,8 @@
     <ClCompile Include="OptimizeMetricMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="levmarq.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="precomp.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\common\OptimizeCommon.h">
       <Filter>Header Files</Filter>
     </ClInclude>

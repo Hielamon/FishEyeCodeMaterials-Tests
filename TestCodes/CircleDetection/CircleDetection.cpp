@@ -1,7 +1,8 @@
-#include <Ransac.h>
 #include <OpencvCommon.h>
+#include <Ransac.h>
 #include <memory>
 #include <ctime>
+
 #define MAIN_FILE
 #include <commonMacro.h>
 
@@ -489,6 +490,7 @@ int main(int argc, char *argv[])
 	CircleDetector::Circle circle;
 	IntevalTime(circle = pCDetector->detect(img));
 	IntevalTime(cv::circle(img, circle.center, circle.radius, cv::Scalar(0, 0, 255), 5));
+	
 	cv::imwrite("circleResult.jpg", img);
 	
 	return 0;
