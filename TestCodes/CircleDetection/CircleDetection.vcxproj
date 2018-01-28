@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{983EBEFA-BCBE-4D31-8737-3F687770E3BA}</ProjectGuid>
+    <ProjectGuid>{8C31183A-B752-40D5-9E74-C7FD0A284B11}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>CircleDetection</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>

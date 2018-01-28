@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{5F07D2AA-2938-4B85-88C2-05006DF46242}</ProjectGuid>
+    <ProjectGuid>{5AB91F25-4AC7-448E-B88F-E7CD1161F1D5}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>SeamFinding</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
@@ -148,10 +148,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="SeamFindingcpp.cpp" />
+    <Text Include="Readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Readme.txt" />
+    <ClCompile Include="SeamFindingcpp.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
