@@ -124,11 +124,67 @@ def showErrorWithNum(typeError, type, title):
 
     plt.show()
 
+def showCurves(fNames, clabels, cStyles, mStyles, xlabel, xMLocator, ylabel, yMLocator, title, save):
+    fig = plt.figure()
+    scaleFigure(fig, 1.5)
+    idx = 0
+    for (fName, clabel, cStyle, mStyle) in zip(fNames, clabels, cStyles, mStyles):
+        file = open(fName)
+        x = []
+        y = []
+        lineIdx = 0
+        for line in file.readlines():
+            line = line.replace("\n", "").split(" ")
+            xf = float(line[0])
+            x.append(xf)
+
+            line1 = line[1]
+            if(line1 != "-nan(ind)"):
+                yf = float(line1)
+            else:
+                print("the yValue is -nan(ind) in %dth line %s file" % lineIdx, fName)
+
+            y.append(yf)
+
+            lineIdx += 1
+        plt.plot(x, y, cStyle, label = clabel, marker = mStyle)
+
+    plt.legend()
+    plt.grid()
+    plt.title(title)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    if len(x) >= 1 and xMLocator > 0.0:
+        ax = plt.gca()
+        ax.xaxis.set_major_locator( MultipleLocator(xMLocator))
+
+    if len(y) >= 1 and yMLocator > 0.0:
+        ax = plt.gca()
+        ax.yaxis.set_major_locator( MultipleLocator(yMLocator))
+
+    if save:
+        fig.savefig(title + ".png")
+
+    plt.show()
+ 
 def parseTest(argv):
-    helpStr = 'DrawErrorCurve.py -i <inputfile> -o <outpoutfile>'
+    helpStr = 'DrawErrorCurve.py -f <file1 file2 ...> -l <clabel1 clabel2 ...> \
+    -s <cStyle1 cStyle2 ...> -m <m1 m2 ...> -x <xlabel> --xM <xMLocator> \
+    --yM <yMLocator> -y <ylabel> -t <title> --save <save>'
+
+    fNames = []
+    clabels = []
+    cStyles = []
+    mStyles = []
+    xlabel = r'x'
+    xMLocator = 0.0
+    ylabel = r'y'
+    yMLocator = 0.0
+    title = 'curve'
+    save = False
 
     try:
-        opts, args = getopt.getopt(argv, "hi:o:", ["ifile="])
+        opts, args = getopt.getopt(argv, "hf:l:s:m:x:y:t:", ["xM=", "yM=", "save="])
     except getopt.GetoptError:
         print(helpStr)
         sys.exit(2)
@@ -137,15 +193,30 @@ def parseTest(argv):
         if opt == '-h':
             print(helpStr)
             sys.exit()
-        elif opt in ("-i", "--ifile"):
-            inputfile = arg
-        elif opt in ("-o", "--ofile"):
-            outputfile = arg
-    return opt, arg
+        elif opt in ("-f"):
+            fNames = arg.split(' ')
+        elif opt in ("-l"):
+            clabels = arg.split(' ')
+        elif opt in ("-s"):
+            cStyles = arg.split(' ')
+        elif opt in ("-m"):
+            mStyles = arg.split(' ')
+        elif opt in ("-x"):
+            xlabel = arg
+        elif opt in ("--xM"):
+            xMLocator = float(arg)
+        elif opt in ("-y"):
+            ylabel = arg
+        elif opt in ("--yM"):
+            yMLocator = float(arg)
+        elif opt in ("-t"):
+            title = arg
+        elif opt in ("--save"):
+            if arg == 'yes':
+                save = True
+
+    return fNames, clabels, cStyles, mStyles, xlabel, xMLocator, ylabel, yMLocator, title, save
 
 if __name__ == "__main__":
-    #showErrorWithNum("PairsNum", "mean", "Mean Pixel Error Curves With Diff Pairs Number")
-    #showErrorWithNum("PairsNum", "median", "Median Pixel Error Curves With Diff Pairs Number")
-    #showErrorWithNum("PairsNumRot", "mean", "Mean Rotation Error Curves With Diff Pairs Number")
-    #showErrorWithNum("PairsNumRot", "median", "Median Rotation Error Curves With Diff Pairs Number")
-    parseTest(sys.argv[1:])
+    fNames, clabels, cStyles, mStyles, xlabel, xMLocator, ylabel, yMLocator, title, save = parseTest(sys.argv[1:])
+    showCurves(fNames, clabels, cStyles, mStyles, xlabel, xMLocator, ylabel, yMLocator, title, save)

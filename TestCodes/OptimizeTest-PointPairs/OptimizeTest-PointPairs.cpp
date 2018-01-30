@@ -6,7 +6,7 @@ using namespace cv;
 using namespace FishEye;
 
 double ratio = 15, base = 15;
-bool justDrawCurves = /*!*/false;
+bool justDrawCurves = !false;
 
 int main(int argc, char *argv[])
 {
@@ -126,7 +126,7 @@ int main(int argc, char *argv[])
 	}
 
 	std::string dir = "";
-	std::vector<std::string> vCStyles = { "r-", "b-", "g-" }, vMStyles = { "o", "s", "D" }, 
+	std::vector<std::string> vCStyles = { "r-", "b-", "g-" }, vMStyles = { "o", "s", "D" },
 		vLabels = { "PolynomialAngle","PolynomialRadius","GeyerModel" };
 
 	std::stringstream ioStr;
@@ -200,6 +200,6 @@ int main(int argc, char *argv[])
 	ioStr << " -t \"" << figTitle << "\" -f \"" << vMedianFNames[vLabels[0]] << " " << vMedianFNames[vLabels[1]] << " " << vMedianFNames[vLabels[2]] << "\"";
 	command = commonCMD + ioStr.str();
 	system(command.c_str());
-	
+
 	return 0;
 }

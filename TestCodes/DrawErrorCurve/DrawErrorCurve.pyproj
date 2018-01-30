@@ -14,7 +14,7 @@
     <RootNamespace>DrawErrorCurve</RootNamespace>
     <IsWindowsApplication>False</IsWindowsApplication>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>-i "text.txt text2.txt"</CommandLineArguments>
+    <CommandLineArguments>-f "../OptimizeMetric/PolynomialAngle_PairsNum_meanErrors.txt ../OptimizeMetric/PolynomialRadius_PairsNum_meanErrors.txt ../OptimizeMetric/GeyerModel_PairsNum_meanErrors.txt" -l "PolynomialAngle PolynomialRadius GeyerModel" -s "r- b- g-" -m "o s D" -x "point pairs number" --xM 30.0 -y "error" --yM 0.2 -t "Mean Pixel Error Curves With Diff Point Pairs Number" --save yes -h</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">

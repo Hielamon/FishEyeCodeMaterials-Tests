@@ -5,7 +5,7 @@
 using namespace cv;
 using namespace FishEye;
 
-double ratio = 15, base = 15;
+double ratio = 0.01, base = 0.0;
 bool justDrawCurves = /*!*/false;
 
 int main(int argc, char *argv[])
@@ -25,13 +25,13 @@ int main(int argc, char *argv[])
 
 	if (!justDrawCurves)
 	{
-		int maxLevel = 20;
+		int maxLevel = 11;
 		for (size_t j = 0; j < maxLevel; j++)
 		{
-			int pNum = j*ratio + base;
+			double translate = j*ratio + base;
 
 			std::cout << "\n\n\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^" << std::endl;
-			std::cout << "Pairs Num Level = " << j << "th(" << pNum << " pairs)" << std::endl;
+			std::cout << "Translate Level = " << j << "th(" << translate << " T length)" << std::endl;
 
 			std::map<std::string, std::vector<double>> Errors, RotErrors;
 			{
@@ -41,7 +41,8 @@ int main(int argc, char *argv[])
 			}
 
 			std::stringstream ioStr;
-			ioStr << "..\\x64\\Release\\CameraDataFactory.exe -trialNum 2000 -sigma 4 -tl 0.05 -pairNum " << pNum;
+			int pNum = 300;
+			ioStr << "..\\x64\\Release\\CameraDataFactory.exe -trialNum 2000 -sigma 0 -pairNum "<< pNum <<" -tl " << translate;
 			std::string command = ioStr.str();
 			system(command.c_str());
 
@@ -92,8 +93,6 @@ int main(int argc, char *argv[])
 						param.at<double>(5, 0) = pRot->axisAngle[2];
 					}
 
-					cv::Vec3d LeastSqrt = pRot->axisAngle;
-
 					levmarpPtr->run(param);
 
 					cv::Mat err, J;
@@ -104,7 +103,7 @@ int main(int argc, char *argv[])
 					double rotError = 0;
 					cv::Vec3d rotResult(param.at<double>(3, 0), param.at<double>(4, 0), param.at<double>(5, 0));
 					rotError = norm(rotResult - pModelData->mpRot->axisAngle);
-					//rotError = norm(LeastSqrt - pModelData->mpRot->axisAngle);
+					//rotError = norm(pRot->axisAngle - pModelData->mpRot->axisAngle);
 					RotErrors[iter->first].push_back(rotError);
 
 					std::cout << iter->first << " error : " << error << std::endl;
@@ -126,7 +125,7 @@ int main(int argc, char *argv[])
 	}
 
 	std::string dir = "";
-	std::vector<std::string> vCStyles = { "r-", "b-", "g-" }, vMStyles = { "o", "s", "D" }, 
+	std::vector<std::string> vCStyles = { "r-", "b-", "g-" }, vMStyles = { "o", "s", "D" },
 		vLabels = { "PolynomialAngle","PolynomialRadius","GeyerModel" };
 
 	std::stringstream ioStr;
@@ -134,7 +133,7 @@ int main(int argc, char *argv[])
 		<< " -l \"PolynomialAngle PolynomialRadius GeyerModel\""
 		<< " -s \"r- b- g- \""
 		<< " -m \"o s D\""
-		<< " -x \"Number of Point Pairs \" -y \"Error\""
+		<< " -x \"Translate Length \" -y \"Error\""
 		<< " --xM " << ratio
 		<< " --save yes";
 
@@ -147,25 +146,25 @@ int main(int argc, char *argv[])
 	{
 		std::vector<double> vMean, vMedian;
 		GetMeanAndMedian(iter->second, vMean, vMedian);
-		std::string meanFName = dir + iter->first + "_PairsNum_meanErrors.txt";
+		std::string meanFName = dir + iter->first + "_Translate_meanErrors.txt";
 		std::cout << iter->first << " : " << std::endl;
 		std::cout << "meanErrors : ";
 		if (!justDrawCurves)SaveErrorsToFile(vMean, meanFName, ratio, base);
 		std::cout << std::endl;
 		vMeanFNames[iter->first] = meanFName;
 
-		std::string medianFName = dir + iter->first + "_PairsNum_medianErrors.txt";
+		std::string medianFName = dir + iter->first + "_Translate_medianErrors.txt";
 		std::cout << "medianErrors : ";
 		if (!justDrawCurves)SaveErrorsToFile(vMedian, medianFName, ratio, base);
 		std::cout << std::endl;
 		vMedianFNames[iter->first] = medianFName;
 	}
-	figTitle = "Mean Pixel Error Curves with Diff Number of Point Pairs";
+	figTitle = "Mean Pixel Error Curves with Diff Translate Levels";
 	ioStr.str("");
 	ioStr << " -t \"" << figTitle << "\" -f \"" << vMeanFNames[vLabels[0]] << " " << vMeanFNames[vLabels[1]] << " " << vMeanFNames[vLabels[2]] << "\"";
 	command = commonCMD + ioStr.str();
 	system(command.c_str());
-	figTitle = "Median Pixel Error Curves with Diff Number of Point Pairs";
+	figTitle = "Median Pixel Error Curves with Diff Translate Levels";
 	ioStr.str("");
 	ioStr << " -t \"" << figTitle << "\" -f \"" << vMedianFNames[vLabels[0]] << " " << vMedianFNames[vLabels[1]] << " " << vMedianFNames[vLabels[2]] << "\"";
 	command = commonCMD + ioStr.str();
@@ -177,29 +176,29 @@ int main(int argc, char *argv[])
 	{
 		std::vector<double> vMean, vMedian;
 		GetMeanAndMedian(iter->second, vMean, vMedian);
-		std::string meanFName = dir + iter->first + "_PairsNumRot_meanErrors.txt";
+		std::string meanFName = dir + iter->first + "_TranslateRot_meanErrors.txt";
 		std::cout << iter->first << " : " << std::endl;
 		std::cout << "meanRotErrors : ";
 		if (!justDrawCurves)SaveErrorsToFile(vMean, meanFName, ratio, base);
 		std::cout << std::endl;
 		vMeanFNames[iter->first] = meanFName;
 
-		std::string medianFName = dir + iter->first + "_PairsNumRot_medianErrors.txt";
+		std::string medianFName = dir + iter->first + "_TranslateRot_medianErrors.txt";
 		std::cout << "medianRotErrors : ";
 		if (!justDrawCurves)SaveErrorsToFile(vMedian, medianFName, ratio, base);
 		std::cout << std::endl;
 		vMedianFNames[iter->first] = medianFName;
 	}
-	figTitle = "Mean Rotation Error Curves with Diff Number of Point Pairs";
+	figTitle = "Mean Rotation Error Curves with Diff Translate Levels";
 	ioStr.str("");
 	ioStr << " -t \"" << figTitle << "\" -f \"" << vMeanFNames[vLabels[0]] << " " << vMeanFNames[vLabels[1]] << " " << vMeanFNames[vLabels[2]] << "\"";
 	command = commonCMD + ioStr.str();
 	system(command.c_str());
-	figTitle = "Median Rotation Error Curves with Diff Number of Point Pairs";
+	figTitle = "Median Rotation Error Curves with Diff Translate Levels";
 	ioStr.str("");
 	ioStr << " -t \"" << figTitle << "\" -f \"" << vMedianFNames[vLabels[0]] << " " << vMedianFNames[vLabels[1]] << " " << vMedianFNames[vLabels[2]] << "\"";
 	command = commonCMD + ioStr.str();
 	system(command.c_str());
-	
+
 	return 0;
 }
